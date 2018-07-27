@@ -1,8 +1,10 @@
-import pygame, sys
+import pygame
+import sys
 
 BACKGROUND = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
 MENU_BACKGROUND = (183, 20, 20)
+
 
 class Button:
     def __init__(self, color, width, height, text, textcolor, textsize, coords):
@@ -15,6 +17,7 @@ class Button:
 
     def draw(self, surface):
         surface.blit(self.image, self.rect_image)
+
 
 class Menu:
     def __init__(self):
@@ -35,3 +38,34 @@ class Menu:
         if self.quit_button.rect.collidepoint(mouse_pos):
             pygame.quit()
             sys.exit()
+
+
+class Text:
+    def __init__(self, text, color, coords, size=42):
+        self.text = text
+        self.color = color
+        self.font = pygame.font.SysFont(None, size)
+        self.image = self.font.render(str(self.text), 1, self.color)
+        self.rect = self.image.get_rect()
+        self.rect.center = coords
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
+
+def show_time(msec):
+    seconds = int(msec / 1000)
+    minutes = int(seconds / 60)
+    hours = int(minutes / 60)
+    seconds %= 60
+    minutes %= 60
+    hours %= 24
+    if seconds < 10:
+        seconds = '0' + str(seconds)
+    if minutes < 10:
+        minutes = '0' + str(minutes)
+    if hours < 10:
+        hours = '0' + str(hours)
+    time = 'Time: ' + str(hours) + ':' + str(minutes) + ':' + str(seconds)
+    time_text = Text(time, TEXT_COLOR, (1000, 300))
+    return time_text
