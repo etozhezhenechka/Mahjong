@@ -106,7 +106,7 @@ def create_gamefield():
             tile = tiles_list.pop(r_index)
 
             tile.rect.x = tile.rect.width + j * tile.rect.width
-            tile.rect.y = tile.rect.height + i * tile.rect.height
+            tile.rect.y = tile.rect.height + i * (tile.rect.height - 1)
             local_tiles.append(tile)
 
             tiles_left += 1
@@ -120,7 +120,6 @@ def create_gamefield():
             tile.rect.x = (tile.rect.width * 5 + 3) + j * tile.rect.width
             tile.rect.y = (tile.rect.height * 3 + 5) + i * tile.rect.height
             local_tiles.append(tile)
-
             tiles_left += 1
     return local_tiles
 
