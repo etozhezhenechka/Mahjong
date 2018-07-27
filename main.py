@@ -9,11 +9,11 @@ SCREEN_RESOLUTION = 1200, 700
 DISPLAY = pygame.display.set_mode(SCREEN_RESOLUTION)
 pygame.display.set_caption('Mahjong')
 tiles_list = tiles_setup()
-
+tiles_left = 0
 
 def main():
     tiles = create_gamefield()
-    tiles_left = 144
+
     tiles_clicked_list = []
     menu_on = True
     menu = TMenu()
@@ -27,7 +27,7 @@ def main():
             menu.draw(DISPLAY)
         else:
             draw_tiles(tiles, DISPLAY)
-            draw_info(time_passed, tiles_left, tiles)
+            draw_info(time_passed, tiles)
             shuffle_button.draw(DISPLAY)
         for event in pygame.event.get():
             if event.type == 12:
@@ -46,6 +46,7 @@ def main():
         is_tile_clicked(mouse_pos, tiles, tiles_clicked_list)
         if len(tiles_clicked_list) == 2:
             if tiles_comparison(tiles_clicked_list[0], tiles_clicked_list[1], tiles):
+                global tiles_left
                 tiles_left -= 2
             tiles_clicked_list = []
         pygame.display.update()
@@ -80,15 +81,18 @@ def draw_tiles(tiles, surface):
 def create_gamefield():
     local_tiles = []
     global tiles_list
+    global tiles_left
 
     for i in range(0, 8):
-        for j in range(0, 14):
+        for j in range(0, 15):
             r_index = random.randrange(len(tiles_list))
             tile = tiles_list.pop(r_index)
 
             tile.rect.x = tile.rect.width + j * tile.rect.width
             tile.rect.y = tile.rect.height + i * tile.rect.height
             local_tiles.append(tile)
+
+            tiles_left += 1
 
     for i in range(0, 4):
         for j in range(0, 6):
@@ -100,10 +104,12 @@ def create_gamefield():
             tile.rect.y = (tile.rect.height * 3 + 5) + i * tile.rect.height
             local_tiles.append(tile)
 
+            tiles_left += 1
     return local_tiles
 
 
-def draw_info(time_passed, tiles_left, tiles):
+def draw_info(time_passed, tiles):
+    global tiles_left
     left_str = 'Tiles left: ' + str(tiles_left) + '/144'
     tiles_left_text = TText(left_str, TEXT_COLOR, (1000, 100))
     tiles_left_text.draw(DISPLAY)
