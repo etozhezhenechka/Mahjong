@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 
 BACKGROUND = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
@@ -28,3 +28,10 @@ class Menu:
     def draw(self, surf):
         self.start_button.draw(surf)
         self.quit_button.draw(surf)
+
+    def action(self, mouse_pos):
+        if self.start_button.rect.collidepoint(mouse_pos):
+            return False
+        if self.quit_button.rect.collidepoint(mouse_pos):
+            pygame.quit()
+            sys.exit()

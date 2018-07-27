@@ -13,8 +13,19 @@ def main():
     menu = Menu()
     while True:
         DISPLAY.fill(BACKGROUND)
+        mouse_pos = 0, 0
         if menu_on:
             menu.draw(DISPLAY)
+        for event in pygame.event.get():
+            if event.type == 12:# QUIT
+                pygame.quit()
+                sys.exit()
+            elif event.type == 6: # MOUSE_UP
+                mouse_pos = event.pos
+                if(menu_on):
+                    menu_on = menu.action(mouse_pos)
+
+
         pygame.display.update()
 
 
