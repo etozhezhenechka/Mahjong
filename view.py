@@ -72,3 +72,11 @@ class TTime:
     def time_text(self):
         time_text = TText(self.time, TEXT_COLOR, (1000, 300))
         return time_text
+
+
+class TBackground(pygame.sprite.Sprite):
+    def __init__(self, image_file, location):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(image_file)
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location

@@ -2,18 +2,10 @@ from view import *
 from tiles import *
 
 import random
+
+
 pygame.init()
-
-
-class Background(pygame.sprite.Sprite):
-    def __init__(self, image_file, location):
-        pygame.sprite.Sprite.__init__(self)  
-        self.image = pygame.image.load(image_file)
-        self.rect = self.image.get_rect()
-        self.rect.left, self.rect.top = location
-
-
-BackGround = Background('img/background.png', [0, 0])
+BackGround = TBackground('img/background.png', [0, 0])
 
 SCREEN_RESOLUTION = 1200, 700
 
@@ -84,7 +76,6 @@ def is_tile_clicked(mouse_pos, tiles, tiles_clicked_list):
                 if game_started:
                     pygame.mixer.music.load('sound/wrong.wav')
                     pygame.mixer.music.play()
-
 
 
 def tiles_comparison(t1, t2, tiles):
