@@ -4,7 +4,7 @@ from tiles import *
 import random
 pygame.init()
 
-SCREEN_RESOLUTION = 1200, 800
+SCREEN_RESOLUTION = 1200, 700
 
 DISPLAY = pygame.display.set_mode(SCREEN_RESOLUTION)
 pygame.display.set_caption('Mahjong')
@@ -16,32 +16,26 @@ def main():
     tiles_left = 144
     tiles_clicked_list = []
     menu_on = True
-    menu = Menu()
+    menu = TMenu()
     start_time = pygame.time.get_ticks()
     while True:
-        DISPLAY.fill(BACKGROUND)
+        DISPLAY.fill(BACKGROUND_COLOR)
         mouse_pos = 0, 0
         time_passed = pygame.time.get_ticks() - start_time
         if menu_on:
-            start_time = pygame.time.get_ticks()
             menu.draw(DISPLAY)
         else:
             draw_tiles(tiles, DISPLAY)
-            left_str = 'Tiles left: ' + str(tiles_left) + '/144'
-            tiles_left_text = Text(left_str, TEXT_COLOR, (1000, 100))
-            tiles_left_text.draw(DISPLAY)
-            time_text = show_time(time_passed)
-            time_text.draw(DISPLAY)
-            pairs_str = 'Pairs available: ' + str(1)
-            pairs_avail_text = Text(pairs_str, TEXT_COLOR, (1000, 200))
-            pairs_avail_text.draw(DISPLAY)
-            shuffle_button = Button(MENU_BACKGROUND, 500, 100, 'SHUFFLE', TEXT_COLOR, 42, (1000, 400))
+            draw_info(time_passed, tiles_left, 1)
+            shuffle_button = TButton(MENU_BACKGROUND_COLOR, 500, 100, 'SHUFFLE', TEXT_COLOR, 42, (1000, 400))
             shuffle_button.draw(DISPLAY)
         for event in pygame.event.get():
-            if event.type == 12:  # QUIT
+            if event.type == 12:
+                # QUIT
                 pygame.quit()
                 sys.exit()
-            elif event.type == 6:  # MOUSE_UP
+            elif event.type == 6:
+                # MOUSE_UP
                 mouse_pos = event.pos
                 if menu_on:
                     menu_on = menu.action(mouse_pos)
@@ -94,6 +88,18 @@ def create_gamefield():
             local_tiles.append(tile)
 
     return local_tiles
+
+
+def draw_info(time_passed, tiles_left, pairs):
+    left_str = 'Tiles left: ' + str(tiles_left) + '/144'
+    tiles_left_text = TText(left_str, TEXT_COLOR, (1000, 100))
+    tiles_left_text.draw(DISPLAY)
+    timer = TTime(time_passed)
+    timer_text = timer.time_text()
+    timer_text.draw(DISPLAY)
+    pairs_str = 'Pairs available: ' + str(pairs)
+    pairs_avail_text = TText(pairs_str, TEXT_COLOR, (1000, 200))
+    pairs_avail_text.draw(DISPLAY)
 
 
 if __name__ == '__main__':

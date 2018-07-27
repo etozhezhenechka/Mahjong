@@ -1,12 +1,12 @@
 import pygame
 import sys
 
-BACKGROUND = (0, 0, 0)
+BACKGROUND_COLOR = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
-MENU_BACKGROUND = (183, 20, 20)
+MENU_BACKGROUND_COLOR = (183, 20, 20)
 
 
-class Button:
+class TButton:
     def __init__(self, color, width, height, text, textcolor, textsize, coords):
         self.font = pygame.font.SysFont(None, textsize)
         self.rect = pygame.Rect(0, 0, width, height)
@@ -19,14 +19,14 @@ class Button:
         surface.blit(self.image, self.rect_image)
 
 
-class Menu:
+class TMenu:
     def __init__(self):
-        color = MENU_BACKGROUND
+        color = MENU_BACKGROUND_COLOR
         width, height = 2000, 90
         textcolor = TEXT_COLOR
         textsize = 70
-        self.start_button = Button(color, width, height, 'Start', textcolor, textsize, (600, 300))
-        self.quit_button = Button(color, width, height, 'Quit', textcolor, textsize, (600, 400))
+        self.start_button = TButton(color, width, height, 'Start', textcolor, textsize, (600, 300))
+        self.quit_button = TButton(color, width, height, 'Quit', textcolor, textsize, (600, 400))
 
     def draw(self, surf):
         self.start_button.draw(surf)
@@ -40,7 +40,7 @@ class Menu:
             sys.exit()
 
 
-class Text:
+class TText:
     def __init__(self, text, color, coords, size=42):
         self.text = text
         self.color = color
@@ -53,19 +53,22 @@ class Text:
         surface.blit(self.image, self.rect)
 
 
-def show_time(msec):
-    seconds = int(msec / 1000)
-    minutes = int(seconds / 60)
-    hours = int(minutes / 60)
-    seconds %= 60
-    minutes %= 60
-    hours %= 24
-    if seconds < 10:
-        seconds = '0' + str(seconds)
-    if minutes < 10:
-        minutes = '0' + str(minutes)
-    if hours < 10:
-        hours = '0' + str(hours)
-    time = 'Time: ' + str(hours) + ':' + str(minutes) + ':' + str(seconds)
-    time_text = Text(time, TEXT_COLOR, (1000, 300))
-    return time_text
+class TTime:
+    def __init__(self, msec):
+        self.seconds = int(msec / 1000)
+        self.minutes = int(self.seconds / 60)
+        self.hours = int(self.minutes / 60)
+        self.seconds %= 60
+        self.minutes %= 60
+        self.hours %= 24
+        if self.seconds < 10:
+            self.seconds = '0' + str(self.seconds)
+        if self.minutes < 10:
+            self.minutes = '0' + str(self.minutes)
+        if self.hours < 10:
+            self.hours = '0' + str(self.hours)
+        self.time = 'Time: ' + str(self.hours) + ':' + str(self.minutes) + ':' + str(self.seconds)
+
+    def time_text(self):
+        time_text = TText(self.time, TEXT_COLOR, (1000, 300))
+        return time_text
