@@ -60,6 +60,16 @@ def shuffle():
 def pairs_counting(tiles):
     pairs_dict = {}
     count_pairs = 0
+    for tile in tiles:
+        if not tile.is_locked(tiles):
+            if tile.name not in pairs_dict.keys():
+                pairs_dict[tile.name] = 0
+            pairs_dict[tile.name] += 1
+            if pairs_dict[tile.name] == 2:
+                count_pairs += 1
+
+    return count_pairs
+
 
 
 

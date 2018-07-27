@@ -26,7 +26,7 @@ def main():
             menu.draw(DISPLAY)
         else:
             draw_tiles(tiles, DISPLAY)
-            draw_info(time_passed, tiles_left, 1)
+            draw_info(time_passed, tiles_left, tiles)
             shuffle_button = TButton(MENU_BACKGROUND_COLOR, 500, 100, 'SHUFFLE', TEXT_COLOR, 42, (1000, 400))
             shuffle_button.draw(DISPLAY)
         for event in pygame.event.get():
@@ -100,14 +100,14 @@ def create_gamefield():
     return local_tiles
 
 
-def draw_info(time_passed, tiles_left, pairs):
+def draw_info(time_passed, tiles_left, tiles):
     left_str = 'Tiles left: ' + str(tiles_left) + '/144'
     tiles_left_text = TText(left_str, TEXT_COLOR, (1000, 100))
     tiles_left_text.draw(DISPLAY)
     timer = TTime(time_passed)
     timer_text = timer.time_text()
     timer_text.draw(DISPLAY)
-    pairs_str = 'Pairs available: ' + str(pairs)
+    pairs_str = 'Pairs available: ' + str(pairs_counting(tiles))
     pairs_avail_text = TText(pairs_str, TEXT_COLOR, (1000, 200))
     pairs_avail_text.draw(DISPLAY)
 
