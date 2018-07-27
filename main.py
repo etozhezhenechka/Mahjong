@@ -13,20 +13,20 @@ tiles_list = tiles_setup()
 
 def main():
     tiles = create_gamefield()
-
+    tiles_left = 144
+    tiles_clicked_list = []
     menu_on = True
     menu = Menu()
-    tiles_left = 144
     start_time = pygame.time.get_ticks()
     while True:
         DISPLAY.fill(BACKGROUND)
+        mouse_pos = 0, 0
         time_passed = pygame.time.get_ticks() - start_time
         if menu_on:
             start_time = pygame.time.get_ticks()
             menu.draw(DISPLAY)
         else:
             draw_tiles(tiles, DISPLAY)
-
             left_str = 'Tiles left: ' + str(tiles_left) + '/144'
             tiles_left_text = Text(left_str, TEXT_COLOR, (1000, 100))
             tiles_left_text.draw(DISPLAY)
@@ -45,7 +45,34 @@ def main():
                 mouse_pos = event.pos
                 if menu_on:
                     menu_on = menu.action(mouse_pos)
+
+        is_tile_clicked(mouse_pos, tiles, tiles_clicked_list)
+        if len(tiles_clicked_list) == 2:
+            if tiles_comparison(tiles_clicked_list[0], tiles_clicked_list[1], tiles):
+                tiles_left -= 2
+            tiles_clicked_list = []
         pygame.display.update()
+
+
+def is_tile_clicked(mouse_pos, tiles, tiles_clicked_list):
+    for tile in tiles:
+        if tile.rect.collidepoint(mouse_pos) and (not tile.is_locked(tiles)):
+            tile.on_click()
+            if tile.is_chosen():
+                tiles_clicked_list.append(tile)
+            else:
+                if tile in tiles_clicked_list:
+                    tiles_clicked_list.remove(tile)
+
+
+def tiles_comparison(t1, t2, tiles):
+    if t1.name == t2.name:
+        tiles.remove(t1)
+        tiles.remove(t2)
+        return True
+    else:
+        t1.on_click()
+        t2.on_click()
 
 
 def draw_tiles(tiles, surface):
@@ -57,7 +84,7 @@ def create_gamefield():
     local_tiles = []
     global tiles_list
 
-    for i in range(0, 7):
+    for i in range(0, 8):
         for j in range(0, 14):
             r_index = random.randrange(len(tiles_list))
             tile = tiles_list.pop(r_index)
@@ -65,8 +92,6 @@ def create_gamefield():
             tile.rect.x = tile.rect.width + j * tile.rect.width
             tile.rect.y = tile.rect.height + i * tile.rect.height
             local_tiles.append(tile)
-
-    tiles_list = tiles_setup()
 
     return local_tiles
 

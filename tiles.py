@@ -15,19 +15,23 @@ class TTile (pygame.sprite.Sprite):
 
     def on_click(self):
         self.clicked = not self.clicked
+        if self.clicked:
+            self.image.set_alpha(100)
+        else:
+            self.image.set_alpha(255)
 
     def is_locked(self, tiles):
-        locked = False
+        left_block = False
+        right_block = False
 
         for tile in tiles:
             if self.rect.y == tile.rect.y:
-                if (
-                    self.rect.x + self.rect.width == tile.rect.x and
-                    self.rect.x == tile.rect.x + tile.rect.width
-                   ):
-                    locked = True
+                if self.rect.x + self.rect.width == tile.rect.x:
+                    right_block = True
+                if self.rect.x == tile.rect.x + tile.rect.width:
+                    left_block = True
 
-        return locked
+        return left_block and right_block
 
 
 def tiles_setup():
