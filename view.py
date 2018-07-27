@@ -1,8 +1,8 @@
 import pygame
 import sys
 
-BACKGROUND_COLOR = (0, 0, 0)
-TEXT_COLOR = (255, 255, 255)
+BACKGROUND_COLOR = (255, 255, 255)
+TEXT_COLOR = (0, 0, 0)
 MENU_BACKGROUND_COLOR = (183, 20, 20)
 
 

@@ -4,6 +4,17 @@ from tiles import *
 import random
 pygame.init()
 
+
+class Background(pygame.sprite.Sprite):
+    def __init__(self, image_file, location):
+        pygame.sprite.Sprite.__init__(self)  
+        self.image = pygame.image.load(image_file)
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
+
+
+BackGround = Background('img/background.png', [0, 0])
+
 SCREEN_RESOLUTION = 1200, 700
 
 game_started = False
@@ -21,7 +32,8 @@ def main():
     menu = TMenu()
     start_time = pygame.time.get_ticks()
     while True:
-        DISPLAY.fill(BACKGROUND_COLOR)
+        DISPLAY.fill([255, 255, 255])
+        DISPLAY.blit(BackGround.image, BackGround.rect)
         mouse_pos = 0, 0
         time_passed = pygame.time.get_ticks() - start_time
         shuffle_button = TButton(MENU_BACKGROUND_COLOR, 500, 100, 'SHUFFLE', TEXT_COLOR, 42, (1000, 400))
