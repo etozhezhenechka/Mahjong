@@ -56,6 +56,8 @@ def is_tile_clicked(mouse_pos, tiles, tiles_clicked_list):
     for tile in tiles:
         if tile.rect.collidepoint(mouse_pos) and (not tile.is_locked(tiles)):
             tile.on_click()
+            pygame.mixer.music.load('sound/click.wav')
+            pygame.mixer.music.play()
             if tile.is_chosen():
                 tiles_clicked_list.append(tile)
             else:
@@ -65,6 +67,8 @@ def is_tile_clicked(mouse_pos, tiles, tiles_clicked_list):
 
 def tiles_comparison(t1, t2, tiles):
     if t1.name == t2.name:
+        pygame.mixer.music.load('sound/match.wav')
+        pygame.mixer.music.play()
         tiles.remove(t1)
         tiles.remove(t2)
         return True
