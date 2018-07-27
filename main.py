@@ -87,6 +87,16 @@ def create_gamefield():
             tile.rect.y = tile.rect.height + i * tile.rect.height
             local_tiles.append(tile)
 
+    for i in range(0, 4):
+        for j in range(0, 6):
+            r_index = random.randrange(len(tiles_list))
+            tile = tiles_list.pop(r_index)
+            tile.layer = 1
+
+            tile.rect.x = (tile.rect.width * 5 + 3) + j * tile.rect.width
+            tile.rect.y = (tile.rect.height * 3 + 5) + i * tile.rect.height
+            local_tiles.append(tile)
+
     return local_tiles
 
 
