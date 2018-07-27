@@ -6,10 +6,12 @@ pygame.init()
 
 SCREEN_RESOLUTION = 1200, 700
 
+game_started = False
 DISPLAY = pygame.display.set_mode(SCREEN_RESOLUTION)
 pygame.display.set_caption('Mahjong')
 tiles_list = tiles_setup()
 tiles_left = 0
+
 
 def main():
     tiles = create_gamefield()
@@ -53,16 +55,24 @@ def main():
 
 
 def is_tile_clicked(mouse_pos, tiles, tiles_clicked_list):
+    global game_started
     for tile in tiles:
-        if tile.rect.collidepoint(mouse_pos) and (not tile.is_locked(tiles)):
-            tile.on_click()
-            pygame.mixer.music.load('sound/click.wav')
-            pygame.mixer.music.play()
-            if tile.is_chosen():
-                tiles_clicked_list.append(tile)
+        if tile.rect.collidepoint(mouse_pos):
+            if not tile.is_locked(tiles):
+                tile.on_click()
+                pygame.mixer.music.load('sound/click.wav')
+                pygame.mixer.music.play()
+                game_started = True
+                if tile.is_chosen():
+                    tiles_clicked_list.append(tile)
+                else:
+                    if tile in tiles_clicked_list:
+                        tiles_clicked_list.remove(tile)
             else:
-                if tile in tiles_clicked_list:
-                    tiles_clicked_list.remove(tile)
+                if game_started:
+                    pygame.mixer.music.load('sound/wrong.wav')
+                    pygame.mixer.music.play()
+
 
 
 def tiles_comparison(t1, t2, tiles):
