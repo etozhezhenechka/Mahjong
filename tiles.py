@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 
 
 class TTile (pygame.sprite.Sprite):
@@ -32,6 +32,11 @@ class TTile (pygame.sprite.Sprite):
                     left_block = True
 
         return left_block and right_block
+
+    def swap(self, tile):
+        self.name,  tile.name  = tile.name,  self.name
+        self.image, tile.image = tile.image, self.image
+        self.layer, tile.layer = tile.layer, self.layer
 
 
 def tiles_setup():
@@ -70,6 +75,13 @@ def pairs_counting(tiles):
 
     return count_pairs
 
+
+def shuffle_board(tiles):
+    tiles_iter = iter(tiles)
+    for i in range(len(tiles)):
+        r_index = random.randrange(len(tiles))
+        tile = tiles[r_index]
+        tile.swap(next(tiles_iter))
 
 
 

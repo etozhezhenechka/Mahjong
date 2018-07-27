@@ -22,12 +22,12 @@ def main():
         DISPLAY.fill(BACKGROUND_COLOR)
         mouse_pos = 0, 0
         time_passed = pygame.time.get_ticks() - start_time
+        shuffle_button = TButton(MENU_BACKGROUND_COLOR, 500, 100, 'SHUFFLE', TEXT_COLOR, 42, (1000, 400))
         if menu_on:
             menu.draw(DISPLAY)
         else:
             draw_tiles(tiles, DISPLAY)
             draw_info(time_passed, tiles_left, tiles)
-            shuffle_button = TButton(MENU_BACKGROUND_COLOR, 500, 100, 'SHUFFLE', TEXT_COLOR, 42, (1000, 400))
             shuffle_button.draw(DISPLAY)
         for event in pygame.event.get():
             if event.type == 12:
@@ -39,6 +39,9 @@ def main():
                 mouse_pos = event.pos
                 if menu_on:
                     menu_on = menu.action(mouse_pos)
+
+        if not menu_on and shuffle_button.rect.collidepoint(mouse_pos):
+            shuffle_board(tiles)
 
         is_tile_clicked(mouse_pos, tiles, tiles_clicked_list)
         if len(tiles_clicked_list) == 2:
