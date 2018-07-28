@@ -16,13 +16,14 @@ class TTile (pygame.sprite.Sprite):
     def on_click(self):
         self.clicked = not self.clicked
         if self.clicked:
-            self.image.set_alpha(100)
+            self.image.set_alpha(190)
         else:
             self.image.set_alpha(255)
 
     def is_locked(self, tiles):
         left_block = False
         right_block = False
+        upper_block = False
 
         for tile in tiles:
             if self.rect.y == tile.rect.y:
@@ -30,8 +31,12 @@ class TTile (pygame.sprite.Sprite):
                     right_block = True
                 if self.rect.x == tile.rect.x + tile.rect.width:
                     left_block = True
-
-        return left_block and right_block
+                if (
+                        self.rect.x == tile.rect.x  and
+                        self.rect.y == tile.rect.y * (tile.rect.height - 1)
+                   ):
+                    upper_block = True
+        return (left_block and right_block) or upper_block
 
     def swap(self, tile):
         self.name,  tile.name  = tile.name,  self.name
@@ -57,11 +62,6 @@ def tiles_setup():
     return tiles_list
 
 
-def shuffle():
-    emptyhere = 1
-    # shuffling tiles function
-
-
 def pairs_counting(tiles):
     pairs_dict = {}
     count_pairs = 0
@@ -82,9 +82,3 @@ def shuffle_board(tiles):
         r_index = random.randrange(len(tiles))
         tile = tiles[r_index]
         tile.swap(next(tiles_iter))
-
-
-
-
-
-

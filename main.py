@@ -47,6 +47,9 @@ def main():
                     menu_on = menu.action(mouse_pos)
 
         if not menu_on and shuffle_button.rect.collidepoint(mouse_pos):
+            if len(tiles_clicked_list) == 1:
+                tiles_clicked_list[0].on_click()
+                tiles_clicked_list.remove(tiles_clicked_list[0])
             shuffle_board(tiles)
 
         is_tile_clicked(mouse_pos, tiles, tiles_clicked_list)
